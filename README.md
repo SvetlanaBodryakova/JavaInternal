@@ -1,2 +1,0 @@
-# JavaInternal
-Java Intarnal AQA
