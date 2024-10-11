@@ -1,6 +1,5 @@
 package org.example;
 
-import jdk.jfr.Description;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -21,8 +20,8 @@ public class FactorialTests {
 
     @DataProvider(name = "{0}")
     public Object[][] provideData() {
-        return new Object[][] {
-                {"Факториал положительного числа", 7,5040},
-                {"Факториал нуля", 0,1}};
+        return new Object[][]{
+                {"Факториал положительного числа", 7, 5040},
+                {"Факториал нуля", 0, 1}};
     }
 }
