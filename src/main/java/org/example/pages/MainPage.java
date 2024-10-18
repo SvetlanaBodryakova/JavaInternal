@@ -1,12 +1,12 @@
 package org.example.pages;
 
+import org.example.enums.PaymentOptions;
 import org.example.pages.base.BasePage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainPage extends BasePage {
 
@@ -14,72 +14,63 @@ public class MainPage extends BasePage {
         super(driver);
     }
 
-    @FindBy(xpath = "//section[@class='pay']//h2")
-    private WebElement paymentBlockTitle;
-
-    @FindBy(xpath = "//div[@class='pay__partners']//img")
-    private List<WebElement> logos;
-
-    @FindBy(xpath = "//section[@class='pay']//a")
-    private WebElement aboutServiceLink;
-
     @FindBy(xpath = "//button[@class='select__header']")
-    private WebElement serviceTypeDropDown;
-
-    @FindBy(xpath = "//input[@id='connection-phone']")
-    private WebElement inputPhoneField;
-
-    @FindBy(xpath = "//input[@id='connection-sum']")
-    private WebElement inputAmountField;
-
-    @FindBy(xpath = "//input[@id='connection-email']")
-    private WebElement inputEmailField;
+    private WebElement payOptionDropDown;
 
     @FindBy(xpath = "//form[@id='pay-connection']//button[@type='submit']")
     private WebElement continueButton;
 
-    public String getPaymentBlockTitle() {
-        return paymentBlockTitle.getText().replace("\n", " ");
-    }
-
-    public boolean getLogos() {
-        for (WebElement logo : logos) {
-            if (!logo.isDisplayed()) {
-                return false;
-            }
+    private By getPhoneFieldLocator(PaymentOptions paymentOption) {
+        if (paymentOption.title.equals("Услуги связи") || paymentOption.title.equals("Домашний интернет")) {
+            return By.xpath(String.format("//form//input[@id='%s-phone']", paymentOption.attribute));
         }
-        return true;
-    }
-
-    public List<String> getLogoNames() {
-        List<String> logoNames = new ArrayList<>();
-        for (WebElement logo : logos) {
-            logoNames.add(logo.getAttribute("alt"));
+        if (paymentOption.title.equals("Рассрочка") || paymentOption.title.equals("Задолженность")) {
+            return By.xpath(String.format("//form//input[@id='score-%s']", paymentOption.attribute));
         }
-        return logoNames;
+        return null;
     }
 
-    public void followTheLink() {
-        clickElement(aboutServiceLink);
+    private By getAmountFieldLocator(PaymentOptions paymentOption) {
+        return By.xpath(String.format("//form//input[@id='%s-sum']", paymentOption.attribute));
     }
 
-    public String selectPayOption() {
-        return serviceTypeDropDown.getText();
+    private By getEmailFieldLocator(PaymentOptions paymentOption) {
+        return By.xpath(String.format("//form//input[@id='%s-email']", paymentOption.attribute));
+    }
+
+    public WebElement selectPayOption(PaymentOptions paymentOption) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", payOptionDropDown);
+        clickElement(payOptionDropDown);
+        WebElement payOption = driver.findElement(paymentOption.locator);
+        payOption.click();
+        return payOption;
+    }
+
+    public String getPhoneFieldPlaceholder(PaymentOptions paymentOption) {
+        return driver.findElement(getPhoneFieldLocator(paymentOption)).getAttribute("placeholder");
+    }
+
+    public String getAmountFieldPlaceholder(PaymentOptions paymentOption) {
+        return driver.findElement(getAmountFieldLocator(paymentOption)).getAttribute("placeholder");
+    }
+
+    public String getEmailFieldPlaceholder(PaymentOptions paymentOption) {
+        return driver.findElement(getEmailFieldLocator(paymentOption)).getAttribute("placeholder");
     }
 
     public void enterPhone(String phoneNumber) {
-        clickElement(inputPhoneField)
-                .sendKeysToElement(inputPhoneField, phoneNumber);
+        driver.findElement(getPhoneFieldLocator(PaymentOptions.COMMUNICATION))
+                .sendKeys(phoneNumber);
     }
 
-    public void enterAmount(String amount) {
-        clickElement(inputAmountField)
-                .sendKeysToElement(inputAmountField, amount);
+    public void enterAmount(double amount) {
+        driver.findElement(getAmountFieldLocator(PaymentOptions.COMMUNICATION))
+                .sendKeys(Double.toString(amount));
     }
 
     public void enterEmail(String email) {
-        clickElement(inputEmailField)
-                .sendKeysToElement(inputEmailField, email);
+        driver.findElement(getEmailFieldLocator(PaymentOptions.COMMUNICATION))
+                .sendKeys(email);
     }
 
     public void clickContinueButton() {

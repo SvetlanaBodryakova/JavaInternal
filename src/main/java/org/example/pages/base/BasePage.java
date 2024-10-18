@@ -26,11 +26,6 @@ public class BasePage {
         return this;
     }
 
-    public BasePage sendKeysToElement(WebElement webElement, String text) {
-        webElement.sendKeys(text);
-        return this;
-    }
-
     public void clickCookies() {
         new WebDriverWait(driver, Duration.ofSeconds(2))
                 .until(ExpectedConditions.elementToBeClickable(cookies)).click();
