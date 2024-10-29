@@ -52,6 +52,17 @@ public class StartingPage extends BasePage {
     @FindBy(css = "[class='sizes-list j-quick-order-sizes'] >li")
     private List<WebElement> sizeButtons;
 
+    public List<WebElement> getProductCards() {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(60))
+                    .until(ExpectedConditions.visibilityOfAllElements(productCards));
+            return productCards;
+        } catch (TimeoutException | NullPointerException e) {
+            System.out.println("Продуктовые карточки не отображаются!");
+        }
+        return null;
+    }
+
     public WebElement selectProductCard() {
         Random random = new Random();
         return productCards.get(random.nextInt(productCards.size()));

@@ -35,13 +35,8 @@ public class BaseTest {
 
     @BeforeMethod
     public void openBaseURL() {
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-        try {
             driver.get(BASE_URL);
             basePage = new BasePage(driver);
-        } catch (Exception e) {
-            System.out.println("Страница не загружается");
-        }
         try {
             basePage.clickCookies();
         } catch (TimeoutException e) {

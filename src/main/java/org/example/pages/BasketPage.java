@@ -1,5 +1,6 @@
 package org.example.pages;
 
+import org.example.models.Card;
 import org.example.pages.base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -51,5 +52,12 @@ public class BasketPage extends BasePage {
         return quantity.stream()
                 .mapToInt(n -> Integer.parseInt(n.getAttribute("value")))
                 .sum();
+    }
+
+    public WebElement getItemInBasket(Card expectedCard) {
+        return getProductsInBasket().stream()
+                .filter(webElement -> getProductName(webElement).contains(expectedCard.getProductName()))
+                .findFirst()
+                .get();
     }
 }
