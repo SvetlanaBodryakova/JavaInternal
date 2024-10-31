@@ -6,34 +6,40 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.util.List;
-
-import static org.testng.Assert.assertEquals;
-
 public class WBTests extends BaseTest {
 
     @Test
     public void testWB() {
 
-        List<WebElement> productCards = startingPage.getProductCards();
-        WebElement productCard1 = startingPage.selectProductCard();
-        WebElement productCard2 = startingPage.selectProductCard();
-        Card card1 = startingPage.addToBasket(productCard1);
-        Card card2 = startingPage.addToBasket(productCard2);
+        WebElement product1 = startingPage.selectProduct();
+        WebElement product2 = startingPage.selectProduct();
+
+        startingPage.viewProduct(product1);
+        WebElement productCard1 = productForm.getProductCard();
+        Card card1 = productForm.addToBasket(productCard1);
+        productForm.closePopup();
+
+        startingPage.viewProduct(product2);
+        WebElement productCard2 = productForm.getProductCard();
+        Card card2 = productForm.addToBasket(productCard2);
+        productForm.closePopup();
+
+        System.out.println(card1.toString());
+        System.out.println(card2.toString());
 
         startingPage.goToBasketPage();
 
-        SoftAssert softAssert = new SoftAssert();
-        WebElement item1 = basketPage.getItemInBasket(card1);
-        WebElement item2 = basketPage.getItemInBasket(card2);
-        double totalPrice = basketPage.getTotalPrice();
-        int numberOfProducts = basketPage.getNumberOfProducts();
+        WebElement item1 = basketPage.getItem(card1);
+        WebElement item2 = basketPage.getItem(card2);
+        double totalPrice = productForm.getProductPrice(productCard1) + productForm.getProductPrice(productCard2);
 
-        softAssert.assertEquals(card1.getProductName(), basketPage.getProductName(item1), "Название товара не соответствует выбранному!");
-        softAssert.assertEquals(card1.getPrice(), basketPage.getPrice(item1), "Цена не соответствует!");
-        softAssert.assertEquals(card2.getProductName(), basketPage.getProductName(item2), "Название товара не соответствует выбранному!");
-        softAssert.assertEquals(card2.getPrice(), basketPage.getPrice(item2), "Цена не соответствует!");
-        softAssert.assertEquals(totalPrice, card1.getPrice()+ card2.getPrice(), "Невеоная общая сумма товаров");
-        softAssert.assertEquals(numberOfProducts, basketPage.getNumberOfProducts(), "Неверное количество товаров в корзине!");
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(basketPage.getProductName(item1), card1.getProductName(), "Название товара не соответствует выбранному!");
+        softAssert.assertEquals(basketPage.getPrice(item1), card1.getPrice(), "Цена не соответствует!");
+        softAssert.assertEquals(basketPage.getProductName(item2), card2.getProductName(), "Название товара не соответствует выбранному!");
+        softAssert.assertEquals(basketPage.getPrice(item2), card2.getPrice(), "Цена не соответствует!");
+        softAssert.assertEquals(totalPrice, card1.getPrice() + card2.getPrice(), "Неверная общая сумма товаров");
+        softAssert.assertEquals(basketPage.getNumberOfProducts(), 2, "Неверное количество товаров в корзине!");
+        softAssert.assertAll();
     }
 }

@@ -30,7 +30,7 @@ public class BasketPage extends BasePage {
     private WebElement totalPrice;
 
 
-    public List<WebElement> getProductsInBasket() {
+    private List<WebElement> getProductsInBasket() {
         return items;
     }
 
@@ -54,7 +54,7 @@ public class BasketPage extends BasePage {
                 .sum();
     }
 
-    public WebElement getItemInBasket(Card expectedCard) {
+    public WebElement getItem(Card expectedCard) {
         return getProductsInBasket().stream()
                 .filter(webElement -> getProductName(webElement).contains(expectedCard.getProductName()))
                 .findFirst()

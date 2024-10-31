@@ -23,4 +23,9 @@ public class Card {
         Card o = (Card) obj;
         return this.getProductName() == o.getProductName() && this.getPrice() == o.getPrice();
     }
+    @Override
+    public String toString() {
+        return "product name: " + productName + "\n" + "price: " + price;
+    }
+
 }

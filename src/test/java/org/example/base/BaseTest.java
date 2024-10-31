@@ -3,6 +3,7 @@ package org.example.base;
 import org.example.pages.BasketPage;
 import org.example.pages.StartingPage;
 import org.example.pages.base.BasePage;
+import org.example.pages.forms.ProductForm;
 import org.example.utils.Driver;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -18,6 +19,7 @@ public class BaseTest {
     protected BasePage basePage;
     protected StartingPage startingPage;
     protected BasketPage basketPage;
+    protected ProductForm productForm;
     protected static WebDriver driver;
     public static final String BASE_URL = "https://wildberries.ru";
 
@@ -31,11 +33,13 @@ public class BaseTest {
     public void setPage() {
         startingPage = new StartingPage(driver);
         basketPage = new BasketPage(driver);
+        productForm = new ProductForm(driver);
     }
 
     @BeforeMethod
     public void openBaseURL() {
             driver.get(BASE_URL);
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
             basePage = new BasePage(driver);
         try {
             basePage.clickCookies();

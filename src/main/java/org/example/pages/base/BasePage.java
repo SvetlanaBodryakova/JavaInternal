@@ -13,7 +13,7 @@ public class BasePage {
 
     protected WebDriver driver;
 
-    @FindBy(xpath = "//div[@class='cookies']//button")
+    @FindBy(css = "[class='cookies__btn btn-minor-md']")
     private WebElement cookies;
 
     public BasePage(WebDriver driver) {
@@ -26,13 +26,8 @@ public class BasePage {
         return this;
     }
 
-    public BasePage sendKeysToElement(WebElement webElement, String text) {
-        webElement.sendKeys(text);
-        return this;
-    }
-
     public void clickCookies() {
-        new WebDriverWait(driver, Duration.ofSeconds(2))
+        new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.elementToBeClickable(cookies)).click();
     }
 }
