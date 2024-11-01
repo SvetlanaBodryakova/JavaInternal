@@ -29,7 +29,7 @@ public class StartingPage extends BasePage {
     private WebElement viewButton;
 
     private List<WebElement> getProductCards() {
-        new WebDriverWait(driver, Duration.ofSeconds(30))
+        new WebDriverWait(driver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfAllElements(productCards));
         return productCards;
     }
@@ -46,7 +46,7 @@ public class StartingPage extends BasePage {
                 .moveToElement(element)
                 .build()
                 .perform();
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.elementToBeClickable(element
                         .findElement(By.cssSelector("[class='product-card__fast-view hide-mobile j-open-product-popup']"))))
                 .click();

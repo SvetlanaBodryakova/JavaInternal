@@ -27,7 +27,7 @@ public class ProductForm extends BasePage {
     @FindBy(css = "[class='j-close popup__close close']")
     private WebElement closePopup;
 
-    @FindBy(css = "[class='product__brand-name'] + span")
+    @FindBy(css = "[class*='product__brand-name']+span[data-link]")
     private WebElement productName;
 
     @FindBy(css = "[class*='final-price']")
@@ -43,7 +43,7 @@ public class ProductForm extends BasePage {
     private List<WebElement> sizeButtons;
 
     public WebElement getProductCard() {
-        new WebDriverWait(driver, Duration.ofSeconds(30))
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='popup i-popup-same-part-kt j-product-popup shown']")));
         return productCard;
     }
@@ -51,7 +51,7 @@ public class ProductForm extends BasePage {
     public Card addToBasket(WebElement element) {
         clickElement(basketButton);
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(3))
+            new WebDriverWait(driver, Duration.ofSeconds(5))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='popup popup-list-of-sizes shown slideUp']")));
             selectSize();
         } catch (TimeoutException | NoSuchElementException e) {
@@ -66,11 +66,12 @@ public class ProductForm extends BasePage {
     }
 
     public String getProductName(WebElement element) {
-        return productName.getText().replace("/ ", "");
+        return element.findElement(By.cssSelector("[class*='product__brand-name']+span[data-link]")).getText();
     }
 
     public Double getProductPrice(WebElement element) {
-        return Double.parseDouble(price.getText().replaceAll("[^0-9.]", ""));
+        return Double.parseDouble(element.findElement(By.cssSelector("[class*='final-price']"))
+                .getText().replaceAll("[^0-9.]", ""));
     }
 
     private Card getCard(WebElement element) {
@@ -79,7 +80,7 @@ public class ProductForm extends BasePage {
         return new Card(name, price);
     }
 
-    public void closePopup() {
+    public void closeProductCard() {
         clickElement(closePopup);
     }
 }

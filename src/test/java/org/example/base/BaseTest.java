@@ -12,8 +12,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
-import java.time.Duration;
-
 public class BaseTest {
 
     protected BasePage basePage;
@@ -38,9 +36,8 @@ public class BaseTest {
 
     @BeforeMethod
     public void openBaseURL() {
-            driver.get(BASE_URL);
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
-            basePage = new BasePage(driver);
+        driver.get(BASE_URL);
+        basePage = new BasePage(driver);
         try {
             basePage.clickCookies();
         } catch (TimeoutException e) {

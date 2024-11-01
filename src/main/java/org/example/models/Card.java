@@ -2,16 +2,16 @@ package org.example.models;
 
 public class Card {
 
-    private String productName;
+    private String name;
     private double price;
 
-    public Card(String productName, double price) {
-        this.productName = productName;
+    public Card(String name, double price) {
+        this.name = name;
         this.price = price;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
     public double getPrice() {
@@ -21,11 +21,12 @@ public class Card {
     @Override
     public boolean equals(Object obj) {
         Card o = (Card) obj;
-        return this.getProductName() == o.getProductName() && this.getPrice() == o.getPrice();
+        return this.getName() == o.getName() && this.getPrice() == o.getPrice();
     }
+
     @Override
     public String toString() {
-        return "product name: " + productName + "\n" + "price: " + price;
+        return "product name: " + name + "\n" + "price: " + price;
     }
 
 }
