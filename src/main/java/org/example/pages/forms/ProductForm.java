@@ -43,7 +43,7 @@ public class ProductForm extends BasePage {
     private List<WebElement> sizeButtons;
 
     public WebElement getProductCard() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
+        new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class='popup i-popup-same-part-kt j-product-popup shown']")));
         return productCard;
     }
@@ -51,7 +51,7 @@ public class ProductForm extends BasePage {
     public Card addToBasket(WebElement element) {
         clickElement(basketButton);
         try {
-            new WebDriverWait(driver, Duration.ofSeconds(5))
+            new WebDriverWait(driver, Duration.ofSeconds(2))
                     .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[class*='popup popup-list-of-sizes shown slideUp']")));
             selectSize();
         } catch (TimeoutException | NoSuchElementException e) {

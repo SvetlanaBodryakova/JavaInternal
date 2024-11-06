@@ -37,8 +37,11 @@ public class BasketPage extends BasePage {
 
 
     private List<WebElement> getProductsInBasket() {
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.visibilityOf(basketSection));
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return items;
     }
 
@@ -46,7 +49,7 @@ public class BasketPage extends BasePage {
         return element.findElement(By.cssSelector("[class*='good-info__good-name']")).getText();
     }
 
-    public double getPrice(WebElement element) {
+        public double getPrice(WebElement element) {
         return Double.parseDouble(element.findElement(By.cssSelector("[class*='list-item__price-new']"))
                 .getText().replaceAll("[^0-9.]", ""));
     }
